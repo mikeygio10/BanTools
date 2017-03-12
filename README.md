@@ -9,10 +9,10 @@
  • /visible
  - Make visible to other players!
  
- • /eb <player> <reason>
+ • /eb < player > < reason >
  - Ban any player from your server!
  
- • /ep <pardon>
+ • /ep < pardon >
  - Pardon any player that has been banned by this plugin. (If the player didnt have been banned by this plugin please use default commands...)
  
  • /tools
@@ -21,10 +21,10 @@
  • /co
  - Join to OP-CHAT and left too!
  
- • /info <player>
+ • /info < player >
  - Check any player information!
  
- • /fre <player>
+ • /fre < player >
  - Freeze and unfreeze any player! (If player left while he/she is freezed the plugin will give a ban automatic)
  
  
