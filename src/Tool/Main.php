@@ -31,11 +31,13 @@ class Main extends PluginBase implements Listener{
 	@mkdir($this->getDataFolder());
 	$config = new Config($this->getDataFolder()."Config.yml", Config::YAML, [
 "Twitter" => "GreenNetwork_",
-"Left-Message" => ,
+"Left-Message" => "§7[§c-§7]§c {player}",
+"Join-Message" => "§7[§a+§7]§a {player}",
 "Block-Long-Damage" => false,
 "Alert-long-distance" => true,
 ]);
 	$this->c = $config;
+	$this->c->reload();
 	$this->c->save();
 	}
 	
@@ -127,7 +129,9 @@ class Main extends PluginBase implements Listener{
 	case "invisible":
 	if($sender->isOp()){
 		if($sender instanceof Player){
-			$this->getServer()->broadcastMessage("§7[§c-§7] §c".$sender->getName());
+			$cast = $this->c->get("Left-Message");
+			$cast = str_replace("{player}", $sender->getName(), $cast);
+			$this->getServer()->broadcastMessage($cast);
 			$sender->sendMessage("§eSpy§6Mode §aEnabled");
 			foreach($this->getServer()->getOnlinePlayers() as $players){
 				$players->hidePlayer($sender);
@@ -145,7 +149,9 @@ class Main extends PluginBase implements Listener{
 	case "visible":
 	if($sender->isOp()){
 		if($sender instanceof Player){
-			$this->getServer()->broadcastMessage("§7[§a+§7] §a".$sender->getName());
+			$cast = $this->c->get("Join-Message");
+			$cast = str_replace("{player}", $sender->getName(), $cast);
+			$this->getServer()->broadcastMessage($cast);
 			$sender->sendMessage("§eSpy§6Mode §cDisabled");
 			foreach($this->getServer()->getOnlinePlayers() as $players){
 				$players->showPlayer($sender);
