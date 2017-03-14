@@ -12,6 +12,8 @@ use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerQuitEvent;
 use pocketmine\event\player\PlayerMoveEvent;
 use pocketmine\event\player\PlayerChatEvent;
+use pocketmine\event\block\BlockPlaceEvent;
+use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\player\PlayerPreLoginEvent;
 use pocketmine\utils\TextFormat as T;
 use pocketmine\utils\Config;
@@ -26,7 +28,13 @@ class Main extends PluginBase implements Listener{
 	public function onEnable(){
 	$this->getServer()->getPluginManager()->registerEvents($this, $this);
 	$this->getLogger()->notice("§b@BEcraft_MCPE");
-	$config = new Config($this->getDataFolder()."Config.yml", Config::YAML, ["Twitter" => "GreenNetwork_",]);
+	@mkdir($this->getDataFolder());
+	$config = new Config($this->getDataFolder()."Config.yml", Config::YAML, [
+"Twitter" => "GreenNetwork_",
+"Left-Message" => ,
+"Block-Long-Damage" => false,
+"Alert-long-distance" => true,
+]);
 	$this->c = $config;
 	$this->c->save();
 	}
@@ -36,8 +44,8 @@ class Main extends PluginBase implements Listener{
 			unset($this->freeze[$e->getPlayer()->getName()]);
 			$config = new Config($this->getDataFolder().$e->getPlayer()->getName().".yml", Config::YAML);
 			$reason = "You left the game while you was freezed";
-$config->set("Datos", array($e->getPlayer()->getName(), $e->getPlayer()->getClientId(), $e->getPlayer()->getAddress(), $reason));
-$config->save();
+            $config->set("Datos", array($e->getPlayer()->getName(), $e->getPlayer()->getClientId(), $e->getPlayer()->getAddress(), $reason));
+            $config->save();
 			$this->getServer()->getNameBans()->addBan($e->getPlayer()->getName(), $reason, null, null);
 			$this->getServer()->getIPBans()->addBan($e->getPlayer()->getAddress(), $reason, null, null);
 			$this->getServer()->getNetwork()->blockAddress($e->getPlayer()->getAddress(), -1);
@@ -47,6 +55,20 @@ $config->save();
 				}
 		}
 		
+	public function onBreak(BlockBreakEvent $e){
+	$p = $e->getPlayer();
+	if(in_array($p->getName(), $this->freeze)){
+		$e->setCancelled(true);
+		}
+	}
+		
+	public function onPlace(BlockPlaceEvent $e){
+	$p = $e->getPlayer();
+	if(in_array($p->getName(), $this->freeze)){
+		$e->setCancelled(true);
+		}
+	}
+	
 	public function onMove(PlayerMoveEvent $e){
 		$p = $e->getPlayer();
 		if(in_array($p->getName(), $this->freeze)){
@@ -76,18 +98,26 @@ $config->save();
     $entity = $e->getEntity();
     $damager = $e->getDamager();
     if($entity->distance($damager) >= 6){
+    	if($this->c->get("Block-long-damage", true)){
+    	$e->setCancelled(true);
+    	}
     foreach($this->getServer()->getOnlinePlayers() as $players){
     if($players->isOp()){
+    	if($this->c->get("Alert-long-distance", true)){
     $players->sendPopup("§cWarning: §a".$damager->getName()."§7[§a".$entity->distance($damager)."§7]");
-    }else{}
-    if(in_array($entity->getName(), $this->freeze)){
-    	if(!in_array($damager->getName(), $this->freeze)){
+    }
+    }
+    }
+    }
+    if((in_array($entity->getName(), $this->freeze)) and (!in_array($damager->getName(), $this->freeze))){
+    	$damager->sendMessage("§cWarning: §7You cant hit this player!");
     $e->setCancelled(true);
-    $damager->sendMessage("§cWarning: §7You cant hit this player because its freezed!");
     }
+    	if((!in_array($entity->getName(), $this->freeze)) and (in_array($damager->getName(), $this->freeze))){
+    $damager->sendMessage("§cWarning: §7You cant hit this player!");
+    $e->setCancelled(true);
     }
-    }
-    }
+    
     }
     }
     }
@@ -101,8 +131,8 @@ $config->save();
 			$sender->sendMessage("§eSpy§6Mode §aEnabled");
 			foreach($this->getServer()->getOnlinePlayers() as $players){
 				$players->hidePlayer($sender);
-				$sender->setDisplayName(" ");
-				$sender->setNameTag(" ");
+				$sender->setDisplayName("");
+				$sender->setNameTag("");
 				$sender->despawnFromAll();
 				$sender->setAllowFlight(true);
 				$sender->setFlying(true);
