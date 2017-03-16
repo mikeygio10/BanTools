@@ -27,4 +27,7 @@
  • /fre < player >
  - Freeze and unfreeze any player! (If player left while he/she is freezed the plugin will give a ban automatic)
  
+ • /bancheck < name >
+ - See any information about any player hay has been banned
+ 
  
