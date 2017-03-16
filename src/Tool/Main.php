@@ -34,6 +34,7 @@ class Main extends PluginBase implements Listener{
 "Left-Message" => "§7[§c-§7]§c {player}",
 "Join-Message" => "§7[§a+§7]§a {player}",
 "Block-Long-Damage" => false,
+"Long-Distance" => 6,
 "Alert-long-distance" => true,
 ]);
 	$this->c = $config;
@@ -99,7 +100,7 @@ class Main extends PluginBase implements Listener{
     if($e->getEntity() instanceof Player and $e->getDamager() instanceof Player){
     $entity = $e->getEntity();
     $damager = $e->getDamager();
-    if($entity->distance($damager) >= 6){
+    if($entity->distance($damager) >= $this->c->get("Long-Distance")){
     	if($this->c->get("Block-long-damage", true)){
     	$e->setCancelled(true);
     	}
@@ -318,11 +319,25 @@ if($this->getServer()->getName() === "Genisys"){
 	
 	case "tools":
 	if($sender->isOp()){
-		$sender->sendMessage("§7-=]§6Ban§eTools§7[=-\n§6/visible §7[§aMake you visible to other players!§7]\n§6/invisible §7[§aBe like a ghost!§7]\n§6/eb [player] [reason] §7[§aBan any player from this server!§7]\n§6/ep [player] §7[§aPardon any player which is banned!§7]\n§6/co §7[§aJoin and Left from OP-CHAT!§7]\n§6/fre §7[§aFreeze and Unfreeze any player!§7]\n§6/info [player] §7[§aCheck any player information§7]\n§6/tools §7[§aCheck all commands§7]\n§eAuthor: §b@BEcraft_MCPE");
+		$sender->sendMessage("§7-=]§6Ban§eTools§7[=-\n§6/visible §7[§aMake you visible to other players!§7]\n§6/invisible §7[§aBe like a ghost!§7]\n§6/eb [player] [reason] §7[§aBan any player from this server!§7]\n§6/ep [player] §7[§aPardon any player which is banned!§7]\n§6/co §7[§aJoin and Left from OP-CHAT!§7]\n§6/fre §7[§aFreeze and Unfreeze any player!§7]\n§6/info [player] §7[§aCheck any player information§7]\n§6/tools §7[§aCheck all commands§7]\n§6/bancheck <name> §7[§aCheck banned players information§7]\n§eAuthor: §b@BEcraft_MCPE");
 		}else{$sender->sendMessage("§cYou dont have permission to use this command...");}
 		return true;
 		break;
-		
+	
+	case "bancheck":
+	if($sender->isOp()){
+		if(isset($args[0])){
+		$banned = $args[0];
+		if(file_exists($this->getDataFolder().$banned.".yml")){
+			$config = new Config($this->getDataFolder().$banned.".yml", Config::YAML);
+			$datos = $config->get("Datos");
+			$sender->sendMessage("§7-=] §e".$banned."'s §6ban info §7[=-\n§7Address: §6".$datos[2]."\n§7Client ID: §6".$datos[1]."\n§7Reason: §c".$datos[3]);
+			}else{$sender->sendMessage("§cthere is not any player banned with name §a".$banned."§ccheck at next time!");}
+			}else{$sender->sendMessage("§cuse /bancheck <name>");}
+		}else{$sender->sendMessage("§cYou dont have permission to use this command...");}
+	return true;
+	break;
+	
 	}
 	}
   
