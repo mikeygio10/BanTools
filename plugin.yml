@@ -28,3 +28,6 @@ commands:
  tools:
   description: Check all commands
   default: op
+ bancheck:
+  description: Check any player ban
+  default: op
