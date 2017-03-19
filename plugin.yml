@@ -1,6 +1,6 @@
 name: BanTools
 version: 1.0.0
-api: [2.0.0, 2.1.0, 3.0.0-ALPHA4]
+api: [2.0.0, 2.1.0, 3.0.0-ALPHA3, 3.0.0-ALPHA2, 3.0.0-ALPHA4]
 author: BEcraft Gameplay
 main: Tool\Main
 commands:
@@ -28,6 +28,9 @@ commands:
  tools:
   description: Check all commands
   default: op
+ eblist:
+  description: Check all banned players from your server
+  default: op
  bancheck:
-  description: Check any player ban
+  description: Check info about any banned player
   default: op
