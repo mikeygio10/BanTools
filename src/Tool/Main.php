@@ -29,6 +29,7 @@ class Main extends PluginBase implements Listener{
 	$this->getServer()->getPluginManager()->registerEvents($this, $this);
 	$this->getLogger()->notice("§b@BEcraft_MCPE");
 	@mkdir($this->getDataFolder());
+	@mkdir($this->getDataFolder()."Banned/");
 	$config = new Config($this->getDataFolder()."Config.yml", Config::YAML, [
 "Twitter" => "GreenNetwork_",
 "Left-Message" => "§7[§c-§7]§c {player}",
@@ -45,7 +46,7 @@ class Main extends PluginBase implements Listener{
 	public function onQuit(PlayerQuitEvent $e){
 		if(in_array($e->getPlayer()->getName(), $this->freeze)){
 			unset($this->freeze[$e->getPlayer()->getName()]);
-			$config = new Config($this->getDataFolder().$e->getPlayer()->getName().".yml", Config::YAML);
+			$config = new Config($this->getDataFolder()."Banned/".$e->getPlayer()->getName().".yml", Config::YAML);
 			$reason = "You left the game while you was freezed";
             $config->set("Datos", array($e->getPlayer()->getName(), $e->getPlayer()->getClientId(), $e->getPlayer()->getAddress(), $reason));
             $config->save();
@@ -137,7 +138,7 @@ class Main extends PluginBase implements Listener{
 			foreach($this->getServer()->getOnlinePlayers() as $players){
 				$players->hidePlayer($sender);
 				$sender->setDisplayName("");
-				$sender->setNameTag("");
+				//$sender->setNameTag("");
 				$sender->despawnFromAll();
 				$sender->setAllowFlight(true);
 				$sender->setFlying(true);
@@ -157,7 +158,7 @@ class Main extends PluginBase implements Listener{
 			foreach($this->getServer()->getOnlinePlayers() as $players){
 				$players->showPlayer($sender);
 				$sender->spawnToAll();
-				$sender->setNameTag("§a".$sender->getName());
+				//$sender->setNameTag("§a".$sender->getName());
 				$sender->setDisplayName($sender->getName());
 				$sender->setAllowFlight(false);
 				$sender->setFlying(false);
@@ -172,15 +173,13 @@ class Main extends PluginBase implements Listener{
 		if(isset($args[0])){
 			$p = array_shift($args);
 		$player = $sender->getServer()->getPlayer($p);
-		//if(isset($args[1])){
 			$reason = null;
 			for($i = 0; $i < count($args); $i++){
 				$reason .= $args[$i];
 				$reason .= " ";
 				}
 	if($player instanceof Player){
-@mkdir($this->getDataFolder());
-$config = new Config($this->getDataFolder().$player->getName().".yml", Config::YAML);
+$config = new Config($this->getDataFolder()."Banned/".$player->getName().".yml", Config::YAML);
 $ip = $player->getAddress();
 $id = $player->getClientId();
 $config->set("Datos", array($player->getName(), $player->getClientId(), $player->getAddress(), $reason));
@@ -194,7 +193,6 @@ $config->save();
 		$this->getServer()->broadcastMessage("§a".$player->getName()." §7has been banned, reason: §6".$reason);
 	    $player->kick("§7[§ax§7]§cYou have been banned§7[§ax§7] \n§6Banned by: §e{$sender->getName()}\n§6Reason: §e{$reason}\n§7If you think this ban is incorrect or\nyou have any question please contact us\nat §b@{$this->c->get("Twitter")} §7thanks for play!", false);
 		}else{$sender->sendMessage("§cNot player found...");}
-		//}else{$sender->sendMessage("§cuse: /eb <player> <reason>");}
 		}else{$sender->sendMessage("§cuse: /eb <player> <reason>");}
 	}else{$sender->sendMessage("§cYou dont have permission to use this command...");}
 	return true;
@@ -204,8 +202,8 @@ $config->save();
 	if($sender->isOp()){
 		if(isset($args[0])){
 		$player = $args[0];
-		if(file_exists($this->getDataFolder().$player.".yml")){
-			$config = new Config($this->getDataFolder().$player.".yml", Config::YAML);
+		if(file_exists($this->getDataFolder()."Banned/".$player.".yml")){
+			$config = new Config($this->getDataFolder()."Banned/".$player.".yml", Config::YAML);
 			$datos = $config->get("Datos");
 			/*pardon name*/
 			$sender->getServer()->getNameBans()->remove($datos[0]);
@@ -219,7 +217,7 @@ $config->save();
 			$sender->getServer()->getCIDBans()->remove($datos[1]);
 			}
 			//remove file
-			@unlink($this->getDataFolder().$player.".yml");
+			@unlink($this->getDataFolder()."Banned/".$player.".yml");
 			$sender->sendMessage("§ePardon: §a".$player."\n§aCompleted!");
 			}else{$sender->sendMessage("§cSorry this player didnt been banned by this plugin,\n§cuse default command...");}
 			}else{$sender->sendMessage("§cuse: /ep <player>");}
@@ -319,7 +317,7 @@ if($this->getServer()->getName() === "Genisys"){
 	
 	case "tools":
 	if($sender->isOp()){
-		$sender->sendMessage("§7-=]§6Ban§eTools§7[=-\n§6/visible §7[§aMake you visible to other players!§7]\n§6/invisible §7[§aBe like a ghost!§7]\n§6/eb [player] [reason] §7[§aBan any player from this server!§7]\n§6/ep [player] §7[§aPardon any player which is banned!§7]\n§6/co §7[§aJoin and Left from OP-CHAT!§7]\n§6/fre §7[§aFreeze and Unfreeze any player!§7]\n§6/info [player] §7[§aCheck any player information§7]\n§6/tools §7[§aCheck all commands§7]\n§6/bancheck <name> §7[§aCheck banned players information§7]\n§eAuthor: §b@BEcraft_MCPE");
+		$sender->sendMessage("§7-=]§6Ban§eTools§7[=-\n§6/visible §7[§aMake you visible to other players!§7]\n§6/invisible §7[§aBe like a ghost!§7]\n§6/eb [player] [reason] §7[§aBan any player from this server!§7]\n§6/ep [player] §7[§aPardon any player which is banned!§7]\n§6/co §7[§aJoin and Left from OP-CHAT!§7]\n§6/fre §7[§aFreeze and Unfreeze any player!§7]\n§6/info [player] §7[§aCheck any player information§7]\n§6/tools §7[§aCheck all commands§7]\n§6/bancheck <name> §7[§aCheck banned players information§7]\n§6/eblist §7[§aSee all players banned by this plugin!§7]\n§eAuthor: §b@BEcraft_MCPE");
 		}else{$sender->sendMessage("§cYou dont have permission to use this command...");}
 		return true;
 		break;
@@ -328,8 +326,8 @@ if($this->getServer()->getName() === "Genisys"){
 	if($sender->isOp()){
 		if(isset($args[0])){
 		$banned = $args[0];
-		if(file_exists($this->getDataFolder().$banned.".yml")){
-			$config = new Config($this->getDataFolder().$banned.".yml", Config::YAML);
+		if(file_exists($this->getDataFolder()."Banned/".$banned.".yml")){
+			$config = new Config($this->getDataFolder()."Banned/".$banned.".yml", Config::YAML);
 			$datos = $config->get("Datos");
 			$sender->sendMessage("§7-=] §e".$banned."'s §6ban info §7[=-\n§7Address: §6".$datos[2]."\n§7Client ID: §6".$datos[1]."\n§7Reason: §c".$datos[3]);
 			}else{$sender->sendMessage("§cthere is not any player banned with name §a".$banned."§ccheck at next time!");}
@@ -338,14 +336,29 @@ if($this->getServer()->getName() === "Genisys"){
 	return true;
 	break;
 	
+	case "eblist":
+	if($sender->isOp()){
+		$scan = scandir($this->getDataFolder()."Banned/");
+		$sender->sendMessage("§7-=]§eBanned List§7[=-");
+		foreach($scan as $files){
+			if($files !== "." and $files !== ".."){
+				$file = str_replace(".yml", "", $files);
+				$colors = mt_rand(1, 9);
+				$sender->sendMessage("§7[§ax§7] §".$colors.$file);
+				}
+				}
+		}else{$sender->sendMessage("§cYou dont have permission to use this command...");}
+		return true;
+		break;
+
 	}
 	}
   
     public function onBanned(PlayerPreLoginEvent $event){
     $player = $event->getPlayer();
     if($player->isBanned()){
-    if(file_exists($this->getDataFolder().$player->getName().".yml")){
-    $config = new Config($this->getDataFolder().$player->getName().".yml", Config::YAML);
+    if(file_exists($this->getDataFolder()."Banned/".$player->getName().".yml")){
+    $config = new Config($this->getDataFolder()."Banned/".$player->getName().".yml", Config::YAML);
     $datos = $config->get("Datos");
     $event->setKickMessage("§cSorry §a".$player->getName()."§c You are banned from this server...\n§eName: §7".$datos[0]."\n§eReason: §7".$datos[3]);
     $event->setCancelled(true);
