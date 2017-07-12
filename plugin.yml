@@ -1,36 +1,37 @@
 name: BanTools
 version: 1.0.0
-api: [2.0.0, 2.1.0, 3.0.0-ALPHA3, 3.0.0-ALPHA2, 3.0.0-ALPHA4]
+api: [2.0.0, 2.1.0, 3.0.0-ALPHA3, 3.0.0-ALPHA2, 3.0.0-ALPHA4, 3.0.0-ALPHA6]
 author: BEcraft Gameplay
 main: Tool\Main
 commands:
  invisible:
-  description: Make you a ghost
-  default: op
+  description: "Make you a ghost"
+  usage: "/invisible"
  visible:
-  description: Make you visible to players
-  default: op
+  description: "Make you visible to players"
+  usage: "/visible"
  eb:
-  description: Make you visible to players
-  default: op
+  description: "Allows you to ban a user."
+  usage: "/eb"
  ep:
-  description: Pardon any which is banned
-  default: op
+  description: "Pardon any player which is banned."
+  usage: "/ep"
  info:
-  description: See any player information
-  default: op
+  description: "See any players information"
+  usage: "/info"
  fre:
-  description: Freeze and unFreeze any player
-  default: op
+  description: "feeze and unFreeze any player"
+  usage: "/fre"
  co:
-  description: Chat just for op
-  default: op
+  description: "Chat just for op"
+  usage: "/co"
  tools:
-  description: Check all commands
-  default: op
+  description: "Check all commands"
+  usage: "/tools"
  eblist:
-  description: Check all banned players from your server
-  default: op
+  description: "Check all banned players from your server"
+  usage: "/eblist"
  bancheck:
-  description: Check info about any banned player
-  default: op
+  description: "Check info about any banned player"
+  usage: "/bancheck"
+ 
