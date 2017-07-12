@@ -1,7 +1,7 @@
 name: BanTools
 version: 1.0.0
 api: [2.0.0, 2.1.0, 3.0.0-ALPHA3, 3.0.0-ALPHA2, 3.0.0-ALPHA4, 3.0.0-ALPHA6]
-author: BEcraft Gameplay
+author: BEcraft Gameplay & Zeao
 main: Tool\Main
 commands:
  invisible:
@@ -34,4 +34,36 @@ commands:
  bancheck:
   description: "Check info about any banned player"
   usage: "/bancheck"
- 
+ permissions:
+   invisible.command:
+   default: false
+   description: Permission to use /invisible.
+   visible.command:
+   default: false
+   description: Permission to use /visible.
+   eb.command:
+   default: false
+   description: Permission to use /eb
+   ep.command:
+   default: false
+   description: Permission to use /ep
+   info.command:
+   default: false
+   description: Permission to use /info.
+   fre.command:
+   default: false
+   description: Permission to use /fre
+   co.command:
+   default: false
+   description: Permission to use /co
+   tools:
+   default: false
+   description: Permission to use /tools
+   eblist.command:
+   default: false
+   description: Permission to use /eblist
+   bancheck.command:
+   default: false
+   description: Permission to use /bancheck
+   
+   
