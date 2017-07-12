@@ -34,6 +34,7 @@ commands:
  bancheck:
   description: "Check info about any banned player"
   usage: "/bancheck"
+  
  permissions:
    invisible.command:
    default: false
@@ -56,7 +57,7 @@ commands:
    co.command:
    default: false
    description: Permission to use /co
-   tools:
+   tools.command:
    default: false
    description: Permission to use /tools
    eblist.command:
@@ -65,5 +66,3 @@ commands:
    bancheck.command:
    default: false
    description: Permission to use /bancheck
-   
-   
