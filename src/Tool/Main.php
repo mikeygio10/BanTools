@@ -47,7 +47,7 @@ class Main extends PluginBase implements Listener{
 		if(in_array($e->getPlayer()->getName(), $this->freeze)){
 			unset($this->freeze[$e->getPlayer()->getName()]);
 			$config = new Config($this->getDataFolder()."Banned/".$e->getPlayer()->getName().".yml", Config::YAML);
-			$reason = "You left the game while you was freezed";
+			$reason = "You left the game while you was frozen";
             $config->set("Datos", array($e->getPlayer()->getName(), $e->getPlayer()->getClientId(), $e->getPlayer()->getAddress(), $reason));
             $config->save();
 			$this->getServer()->getNameBans()->addBan($e->getPlayer()->getName(), $reason, null, null);
@@ -89,7 +89,7 @@ class Main extends PluginBase implements Listener{
 		if(in_array($player->getName(), $this->chat)){
 			foreach($this->getServer()->getOnlinePlayers() as $players){
 				if(in_array($players->getName(), $this->chat)){
-					$players->sendMessage("§7[§6OP§7-§bCHAT§7] §e".$player->getName()." §7|| §a".$event->getMessage());
+					$players->sendMessage("§7[§6Staff§7-§bCHAT§7] §e".$player->getName()." §7|| §a".$event->getMessage());
 					$event->setCancelled(true);
 					}
 				}
@@ -276,8 +276,8 @@ if($this->getServer()->getName() === "Genisys"){
 			$player = $sender->getServer()->getPlayer($args[0]);
 			if($player instanceof Player){
 				if(!in_array($player->getName(), $this->freeze)){
-					$sender->sendMessage("§e".$player->getName()." §ahas been freezed!");
-					$player->sendMessage("§cYou have been freezed, please dont log out!");
+					$sender->sendMessage("§e".$player->getName()." §ahas been frozen!");
+					$player->sendMessage("§cYou have been frozen, please dont log out!");
 					$this->freeze[$player->getName()] = $player->getName();
 					}else{
 						$sender->sendMessage("§e".$player->getName()." §ahas been unfreezed");
