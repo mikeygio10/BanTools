@@ -1,6 +1,6 @@
 name: BanTools
 version: 1.0.0
-api: [2.0.0, 2.1.0, 3.0.0-ALPHA3, 3.0.0-ALPHA2, 3.0.0-ALPHA4]
+api: [3.0.0]
 author: BEcraft Gameplay
 main: Tool\Main
 commands:
